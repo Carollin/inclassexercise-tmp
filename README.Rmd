@@ -1,0 +1,34 @@
+---
+title: "README"
+author: "Chenyi Lin"
+date: "2/25/2021"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+```{r}
+flights %>% group_by(tailnum)%>%summarise(arr_delay_mean=mean(arr_delay,na.rm = TRUE)) %>%left_join(planes) %>% select(tailnum:year)
+##do not want na
+```
+```{r}
+flights %>% group_by(origin, month, day)%>%
+  summarise(deps = n())%>%
+  pivot_wider(names_from = origin,values_from = deps)
+
+flights%>%
+  mutate(date =as.Date(time_hour))%>%
+  group_by(origin,date)%>%
+  summarise(deps = n())%>%
+  pivot_wider(names_from = origin,values_from = deps)
+```
+```{r}
+flights%>%
+  mutate(date =as.Date(time_hour))%>%
+  group_by(date,dest)%>%
+  summarise(deps = n())%>%
+  pivot_wider(names_from = dest,values_from = deps)
+```
+##Na means 0. because there was no fllights on that day.
